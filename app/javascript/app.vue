@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <div class="flash" v-if="show">
+      メモを追加しました！
+    </div>
     <div class="form">
       <div class="form-group">
         <input v-model="title" placeholder="title" class="form-control"></input>
@@ -7,7 +10,7 @@
       <div class="form-group">
         <input v-model="description" placeholder="description" class="form-control">
       </div>
-      <button @click="addMemo">メモを追加</button>
+      <button @click="addMemo($event); showFlash($event)">メモを追加</button>
     </div>
     <div class="flex">
       <div v-for="memo in memos" :key="memo.id" class="card">
@@ -30,6 +33,7 @@ export default {
       memos: "memos",
       title: "",
       description: "",
+      show: false,
     }
   },
   mounted () {
@@ -50,6 +54,12 @@ export default {
       .then(response => (
         this.setMemo()
       ));
+    },
+    showFlash () {
+      this.show = true;
+      setTimeout(() => {
+        this.show = false
+      }, 5000)
     }
   }
 }
@@ -58,6 +68,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.flash {
+  text-align: center;
+}
 .form {
   display: flex;
   flex-direction: column;
